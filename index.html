@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Ulang Tahun, Si Kecil Nangis!</title>
+    <!-- Memuat Tailwind CSS untuk styling --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Memuat Google Fonts untuk tulisan yang indah --><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Memuat Tone.js untuk musik --><script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <style>
+        /* Menggunakan font kustom */
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden; /* Mencegah scroll */
+            color: #E2E8F0; /* slate-200 */
+        }
+        .handwriting {
+            font-family: 'Great Vibes', cursive;
+        }
+        /* Animasi untuk bintang berkelip */
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: white;
+            border-radius: 50%;
+            box-shadow: 0 0 5px white;
+            animation: floatUp 10s linear forwards;
+            opacity: 0;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-120vh);
+                opacity: 0;
+            }
+        }
+        /* Style untuk galeri foto */
+        .slider-container {
+            width: 90%;
+            max-width: 500px;
+            aspect-ratio: 4 / 3;
+            box-shadow: 0 0 25px rgba(251, 191, 36, 0.4); /* amber-400 */
+        }
+        .slider {
+            transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-gray-900 to-slate-800 flex items-center justify-center min-h-screen">
+
+    <!-- Overlay Awal untuk Interaksi Pengguna --><div id="start-overlay" class="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center z-50 cursor-pointer text-white text-center p-4">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4 animate-pulse">Sentuh Kalau Berani, Adik Cengeng!</h1>
+        <p class="text-lg md:text-xl text-slate-300">Siap-siap dengerin kebenaran...</p>
+    </div>
+
+    <!-- Konten Utama Halaman --><main id="main-content" class="text-center p-4 opacity-0 transition-opacity duration-1000 ease-in-out">
+        <h1 class="handwriting text-6xl md:text-8xl text-amber-300 drop-shadow-[0_2px_5px_rgba(252,211,77,0.5)] mb-4">
+            Happy Birthday, Si Bawel!
+        </h1>
+        <p class="text-xl md:text-2xl mb-2 text-slate-200 font-light">Tambah tua, tapi kelakuan masih aja kayak bocah.</p>
+        <p class="text-lg md:text-xl text-slate-400 mb-8">Walaupun nyebelin, ini Abang kumpulin foto-foto aibmu.</p>
+
+        <!-- Galeri Foto Bergulir --><div class="slider-container mx-auto overflow-hidden rounded-2xl border-2 border-amber-300/50">
+            <div id="slider" class="flex h-full">
+                <!-- Gambar akan ditambahkan di sini oleh JavaScript --></div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const startOverlay = document.getElementById('start-overlay');
+            const mainContent = document.getElementById('main-content');
+            const slider = document.getElementById('slider');
+
+            // --- Daftar gambar sesuai dengan file lokal Anda ---
+            const images = [
+                '1.jpg',
+                '2.jpg',
+                '3.jpg',
+                '4.jpg',
+                '5.jpg',
+                '6.jpg',
+                '7.jpg',
+                '8.jpg',
+                '9.jpg',
+                '10.jpg',
+                '11.jpg'
+            ];
+
+            // Menambahkan gambar ke slider
+            images.forEach(src => {
+                const imgContainer = document.createElement('div');
+                imgContainer.className = 'w-full h-full flex-shrink-0';
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = 'Foto Kenangan';
+                img.className = 'w-full h-full object-cover';
+                img.onerror = () => {
+                    img.src = `https://placehold.co/500x375/94a3b8/ffffff?text=Gambar+Gagal+Dimuat`;
+                };
+                imgContainer.appendChild(img);
+                slider.appendChild(imgContainer);
+            });
+
+            // Logika untuk Slider Foto
+            let currentIndex = 0;
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % images.length;
+                slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+            }, 3500); // Ganti gambar setiap 3.5 detik
+
+            // Fungsi untuk membuat bintang berkelip
+            function createStars() {
+                const starCount = 50; // Jumlah bintang yang dibuat setiap kali fungsi dipanggil
+                for (let i = 0; i < starCount; i++) {
+                    const star = document.createElement('div');
+                    star.classList.add('star');
+                    star.style.left = `${Math.random() * 100}vw`;
+                    star.style.bottom = `${Math.random() * 100}vh`; // Mulai dari posisi acak di bawah
+                    star.style.animationDelay = `${Math.random() * 5}s`;
+                    star.style.animationDuration = `${Math.random() * 5 + 5}s`; // Durasi antara 5-10 detik
+                    star.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
+                    document.body.appendChild(star);
+                    setTimeout(() => star.remove(), 10000);
+                }
+            }
+            
+            // Fungsi untuk memainkan musik Selamat Ulang Tahun dengan Tone.js
+            function playBirthdaySong() {
+                console.log("Mencoba memainkan lagu...");
+                const synth = new Tone.Synth({
+                    oscillator: { type: 'sine' },
+                    envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 1 }
+                }).toDestination();
+                
+                const now = Tone.now();
+                const melody = [
+                    { note: 'C4', duration: '8n', time: now }, { note: 'C4', duration: '8n', time: now + 0.2 }, { note: 'D4', duration: '4n', time: now + 0.4 }, { note: 'C4', duration: '4n', time: now + 0.8 }, { note: 'F4', duration: '4n', time: now + 1.2 }, { note: 'E4', duration: '2n', time: now + 1.6 },
+                    { note: 'C4', duration: '8n', time: now + 2.4 }, { note: 'C4', duration: '8n', time: now + 2.6 }, { note: 'D4', duration: '4n', time: now + 2.8 }, { note: 'C4', duration: '4n', time: now + 3.2 }, { note: 'G4', duration: '4n', time: now + 3.6 }, { note: 'F4', duration: '2n', time: now + 4.0 },
+                    { note: 'C4', duration: '8n', time: now + 4.8 }, { note: 'C4', duration: '8n', time: now + 5.0 }, { note: 'C5', duration: '4n', time: now + 5.2 }, { note: 'A4', duration: '4n', time: now + 5.6 }, { note: 'F4', duration: '4n', time: now + 6.0 }, { note: 'E4', duration: '4n', time: now + 6.4 }, { note: 'D4', duration: '2n', time: now + 6.8 },
+                    { note: 'A#4', duration: '8n', time: now + 7.6 }, { note: 'A#4', duration: '8n', time: now + 7.8 }, { note: 'A4', duration: '4n', time: now + 8.0 }, { note: 'F4', duration: '4n', time: now + 8.4 }, { note: 'G4', duration: '4n', time: now + 8.8 }, { note: 'F4', duration: '2n', time: now + 9.2 }
+                ];
+                
+                melody.forEach(note => synth.triggerAttackRelease(note.note, note.duration, note.time));
+
+                if (Tone.Transport.state !== 'started') {
+                    Tone.Transport.start();
+                    console.log("Tone.Transport dimulai.");
+                }
+            }
+            
+            // Event listener untuk memulai semuanya
+            startOverlay.addEventListener('click', async () => {
+                console.log("Overlay diklik. Memulai audio...");
+                try {
+                    await Tone.start();
+                    console.log("Konteks audio berhasil dimulai!");
+
+                    playBirthdaySong();
+                    setInterval(playBirthdaySong, 10000); // Ulangi lagu
+
+                    createStars();
+                    setInterval(createStars, 3000);
+
+                    startOverlay.style.transition = 'opacity 0.5s ease';
+                    startOverlay.style.opacity = '0';
+                    setTimeout(() => {
+                        startOverlay.style.display = 'none';
+                    }, 500);
+
+                    mainContent.style.opacity = '1';
+                } catch (e) {
+                    console.error("Gagal memulai konteks audio:", e);
+                }
+            }, { once: true });
+        });
+    </script>
+</body>
+</html>
+
